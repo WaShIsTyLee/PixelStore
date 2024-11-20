@@ -6,19 +6,33 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    // URL de la base de datos (el archivo de base de datos se crea en el directorio raíz del proyecto)
+    // URL de la base de datos
     private static final String URL = "jdbc:sqlite:PixelStore.db"; // Nombre de la base de datos
 
-    // Método para obtener la conexión a la base de datos
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL); // Obtener la conexión usando DriverManager
+    // Variable estática para mantener la única instancia de la conexión
+    private static Connection connection;
+
+    // Constructor privado para evitar instanciación externa
+    private DatabaseConnection() {
+        // Constructor vacío
     }
 
-    // Método para cerrar la conexión
-    public static void closeConnection(Connection connection) {
+    // Método para obtener la única instancia de la conexión (Singleton)
+    public static Connection getConnection() throws SQLException {
+        if (connection == null) {
+            // Si la conexión es nula, crea una nueva
+            connection = DriverManager.getConnection(URL);
+            System.out.println("Conexión establecida.");
+        }
+        return connection;
+    }
+
+    // Método para cerrar la conexión (cerrar la instancia única)
+    public static void closeConnection() {
         try {
-            if (connection != null) {
+            if (connection != null && !connection.isClosed()) {
                 connection.close();
+                connection = null;  // Setear la conexión a null después de cerrarla
                 System.out.println("Conexión cerrada.");
             }
         } catch (SQLException e) {
