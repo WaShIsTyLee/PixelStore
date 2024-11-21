@@ -6,28 +6,34 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    // URL de la base de datos
-    private static final String URL = "jdbc:sqlite:PixelStore.db"; // Nombre de la base de datos
+    // URL para MySQL (ajusta el host, puerto, nombre de la base de datos, etc.)
+    private static final String URL = "jdbc:mysql://localhost:3306/PixelStore"; // Cambia 'localhost:3306' y 'PixelStore' según corresponda
+    private static final String USER = "root";  // Tu usuario de MySQL
+    private static final String PASSWORD = "";  // Tu contraseña de MySQL
 
-    // Variable estática para mantener la única instancia de la conexión
     private static Connection connection;
 
-    // Constructor privado para evitar instanciación externa
+    // Constructor privado
     private DatabaseConnection() {
-        // Constructor vacío
     }
 
-    // Método para obtener la única instancia de la conexión (Singleton)
+    // Método para obtener la conexión
     public static Connection getConnection() throws SQLException {
         if (connection == null) {
-            // Si la conexión es nula, crea una nueva
-            connection = DriverManager.getConnection(URL);
-            System.out.println("Conexión establecida.");
+            // Cargar el driver de MySQL (en versiones más nuevas, esto puede no ser necesario si el JAR está correctamente incluido)
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException("Driver no encontrado.", e);
+            }
+            // Establecer la conexión con la base de datos
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Conexión a la base de datos MySQL establecida.");
         }
         return connection;
     }
 
-    // Método para cerrar la conexión (cerrar la instancia única)
+    // Método para cerrar la conexión
     public static void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
