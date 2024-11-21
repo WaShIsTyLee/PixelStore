@@ -10,27 +10,28 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
-        <!-- Dependencia para SQLite JDBC -->
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.41.2.0</version> <!-- Verifica que sea la versión más reciente -->
-        </dependency>
-
         <!-- Dependencias para JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>13</version>
+            <version>19</version> <!-- Versión recomendada de JavaFX -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>13</version>
+            <version>19</version> <!-- Versión recomendada de JavaFX -->
+        </dependency>
+
+        <!-- Dependencia para MySQL JDBC -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version> <!-- Asegúrate de usar la versión correcta del conector -->
         </dependency>
     </dependencies>
     <build>
         <plugins>
+            <!-- Plugin para compilar con Java 11 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -39,6 +40,8 @@
                     <release>11</release>
                 </configuration>
             </plugin>
+
+            <!-- Plugin para JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -47,7 +50,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.App</mainClass> <!-- Asegúrate de cambiar esto a tu clase principal -->
+                            <mainClass>org.example.view.App</mainClass> <!-- Cambia esto a tu clase principal -->
                         </configuration>
                     </execution>
                 </executions>
